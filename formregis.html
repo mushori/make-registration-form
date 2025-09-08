@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Aplikasi Registrasi Mahasiswa — Frame Layout</title>
+<style>
+        :root{
+        --bg: #f5f7fb;
+        --card: #ffffff;
+        --brand: #2563eb;
+        --brand-600:#1d4ed8;
+        --text:#111827;
+        --muted:#6b7280;
+        --border:#e5e7eb;
+        }
+        *{box-sizing:border-box;margin:0;padding:0}
+        body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Helvetica,Arial,"Apple Color Emoji","Segoe UI Emoji";background:var(--bg);color:var(--text)}
+
+        /* ===== Frame Layout (Header, Nav, Sidebar, Content, Footer) ===== */
+        .frame{
+        min-height:100dvh; 
+        display:grid;
+        grid-template-rows:auto auto 1fr auto; /* header, nav, main, footer */
+        grid-template-columns:100%;
+        }
+        header.header{
+        background:var(--card);
+        border-bottom:1px solid var(--border);
+        padding:16px 24px;
+        display:flex;align-items:center;justify-content:space-between;
+        }
+        header .title{font-weight:700;letter-spacing:.2px}
+        header .user{font-size:.925rem;color:var(--muted)}
+
+        nav.nav{
+        background:#e8f0ff;
+        border-bottom:1px solid var(--border);
+        padding:10px 16px;
+        }
+        .nav-list{display:flex;gap:12px;flex-wrap:wrap}
+        .nav-list button{appearance:none;border:1px solid #bfd1ff;background:#fff;color:#1f2937;padding:8px 12px;border-radius:10px;cursor:pointer;font-weight:600}
+        .nav-list button.active{background:var(--brand);border-color:var(--brand);color:#fff}
+
+        .main{
+        display:grid;grid-template-columns:280px 1fr;gap:18px;align-items:start; 
+        padding:18px; 
+        }
+        aside.sidebar{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px;position:sticky;top:12px;height:max-content}
+        .side-title{font-size:1rem;font-weight:700;margin-bottom:10px}
+        .menu{display:grid;gap:8px}
+        .menu button{width:100%;text-align:left;appearance:none;border:1px solid var(--border);background:#fff;padding:10px 12px;border-radius:10px;cursor:pointer}
+        .menu button:hover{border-color:#cbd5e1}
+
+        .content{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px}
+        .content h2{margin-bottom:10px}
+        .muted{color:var(--muted)}
+
+        footer.footer{background:var(--card);border-top:1px solid var(--border);padding:14px 18px;color:var(--muted);}
+        
+        .footer{
+        background: var(--card);
+        border-top: 1px solid var(--border);
+        padding: 18px 24px;
+        color: var(--muted);
+        }
+
+        .ft-wrap{
+        max-width: 1200px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: 1.2fr 1fr 1fr;
+        gap: 16px;
+        align-items: center;
+        }
+
+        .ft-brand{color: var(--text)}
+        .ft-brand .ft-sub{font-size: .9rem; color: var(--muted)}
+
+        .ft-nav{
+        display: flex;
+        gap: 14px;
+        justify-content: center;
+        flex-wrap: wrap;
+        }
+        .ft-nav a{
+        text-decoration: none;
+        color: var(--text);
+        padding: 8px 12px;
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        }
+        .ft-nav a:hover{ background: #eef2ff; border-color: #c7d2fe }
+
+        .ft-right{
+        display: grid;
+        gap: 8px;
+        justify-items: end;
+        }
+        .ft-copy{ font-size: .92rem }
+        .ft-social{ display:flex; gap:10px; font-size:1.1rem }
+        .ft-social a{ text-decoration:none }
+
+        @media (max-width: 900px){
+        .ft-wrap{
+            grid-template-columns: 1fr;
+            justify-items: center;
+            text-align: center;
+        }
+        .ft-right{ justify-items: center }
+        }
+
+
+        /* ===== Forms & Table ===== */
+        form{display:grid;gap:12px;margin-top:10px}
+        .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+        label{font-weight:600;font-size:.92rem}
+        input, select, textarea{width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:10px;background:#fff}
+        textarea{min-height:90px;resize:vertical}
+        .radio-row{display:flex;gap:16px;align-items:center}
+        .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+        .btn{appearance:none;border:1px solid transparent;background:var(--brand);color:#fff;padding:10px 14px;border-radius:10px;cursor:pointer;font-weight:700}
+        .btn.secondary{background:#fff;color:#111827;border-color:var(--border)}
+        .btn.danger{background:#ef4444}
+
+        .card{background:#f9fafb;border:1px dashed #cbd5e1;border-radius:12px;padding:12px}
+
+        table{width:100%;border-collapse:separate;border-spacing:0;margin-top:12px}
+        thead th{background:#f1f5f9;text-align:left;padding:10px;border-bottom:1px solid var(--border);font-size:.9rem}
+        tbody td{padding:10px;border-bottom:1px solid var(--border);vertical-align:top;font-size:.95rem}
+        tbody tr:hover{background:#f9fbff}
+
+        .badge{display:inline-block;padding:2px 10px;border-radius:999px;background:#e5edff;color:#1d4ed8;font-weight:700;font-size:.8rem}
+
+        /* ===== Auth badge ===== */
+        .auth-badge{display:inline-flex;gap:8px;align-items:center}
+        .dot{width:8px;height:8px;border-radius:50%;background:#10b981}
+
+        /* ===== Responsive ===== */
+        @media (max-width: 900px){
+        .main{grid-template-columns:1fr}
+        aside.sidebar{position:static}
+        .grid-2{grid-template-columns:1fr}
+        }
+    </style>
+    </head>
+    <body>
+    <div class="frame">
+        <!-- ===== HEADER ===== -->
+        <header class="header">
+        <div class="title">Sistem Registrasi Mahasiswa</div>
+        <div class="user"><span class="auth-badge"><span class="dot" id="authDot" style="display:none"></span><span id="authName">Belum login</span></span></div>
+        </header>
+
+        <!-- ===== NAV (Navigation Control) ===== -->
+        <nav class="nav">
+        <div class="nav-list">
+            <button data-view="login" class="active">Login</button>
+            <button data-view="register">Form Registrasi</button>
+            <button data-view="database">Database</button>
+        </div>
+        </nav>
+
+        <!-- ===== MAIN (Sidebar + Content) ===== -->
+        <div class="main">
+        <aside class="sidebar">
+            <div class="side-title">Menu</div>
+            <div class="menu">
+            <button data-view="login">Login</button>
+            <button data-view="register">Form Registrasi</button>
+            <button data-view="database">Database</button>
+            <button id="btnLogout" class="danger" style="display:none">Logout</button>
+            </div>
+            <div class="card" style="margin-top:12px">
+            <div style="font-weight:700;margin-bottom:6px">Petunjuk:</div>
+            <ol style="padding-left:18px;color:var(--muted);display:grid;gap:6px">
+                <li>Login terlebih dulu.</li>
+                <li>Isi formulir pendaftaran.</li>
+                <li>Data tersimpan ke <em>localStorage</em> (simulasi database) dan tampil di tabel Database.</li>
+            </ol>
+            </div>
+        </aside>
+
+        <section class="content">
+            <!-- ===== VIEW: LOGIN ===== -->
+            <div id="view-login">
+            <h2>Login</h2>
+            <p class="muted">Gunakan akun demo di bawah atau ganti sesuai kebutuhan.</p>
+            <div class="card" style="margin-top:10px">
+                <div><strong>Demo credentials</strong></div>
+                <div class="muted">username: <code>admin</code> &nbsp; password: <code>admin123</code></div>
+            </div>
+            <form id="formLogin" autocomplete="off">
+                <div class="grid-2">
+                <div>
+                    <label for="username">Username</label>
+                    <input id="username" name="username" required />
+                </div>
+                <div>
+                    <label for="password">Password</label>
+                    <input id="password" name="password" type="password" required />
+                </div>
+                </div>
+                <div class="actions">
+                <button class="btn" type="submit">Masuk</button>
+                <button class="btn secondary" type="reset">Reset</button>
+                </div>
+            </form>
+            </div>
+
+            <!-- ===== VIEW: REGISTER ===== -->
+            <div id="view-register" style="display:none">
+            <h2>Formulir Pendaftaran</h2>
+            <p class="muted">Isi data berikut dengan benar. Kolom bertanda * wajib diisi.</p>
+            <form id="formRegister" autocomplete="off">
+                <div class="grid-2">
+                <div>
+                    <label for="nrp">NIM *</label>
+                    <input id="nrp" name="nrp" required pattern="[0-9]{6,15}" title="Hanya angka (6–15 digit)" />
+                </div>
+                <div>
+                    <label for="nama">Nama Lengkap *</label>
+                    <input id="nama" name="nama" required />
+                </div>
+                
+                <div>
+                    <label for="jurusan">Jurusan *</label>
+                    <select id="jurusan" name="jurusan" required>
+                    <option value="">-- Pilih Jurusan --</option>
+                    <option>Informatika</option>
+                    <option>Sistem Informasi</option>
+                    <option>Teknik Komputer</option>
+                    <option>Teknik Elektro</option>
+                    <option>Matematika</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="email">Email *</label>
+                    <input id="email" name="email" type="email" required />
+                </div>
+
+                <div>
+                    <label for="passwordReg">Password *</label>
+                    <input id="passwordReg" name="passwordReg" type="password" minlength="6" required />
+                </div>
+                <div>
+                    <label for="wa">Nomor WhatsApp *</label>
+                    <input id="wa" name="wa" type="tel" required pattern="[0-9]{9,15}" title="Hanya angka (9–15 digit)" />
+                </div>
+                </div>
+
+                <div>
+                <label>Jenis Kelamin *</label>
+                <div class="radio-row" role="group" aria-label="Jenis kelamin">
+                    <label><input type="radio" name="jk" value="Laki-laki" required /> Laki-laki</label>
+                    <label><input type="radio" name="jk" value="Perempuan" /> Perempuan</label>
+                </div>
+                </div>
+
+                <div>
+                <label for="alamat">Alamat *</label>
+                <textarea id="alamat" name="alamat" required></textarea>
+                </div>
+
+                <div class="actions">
+                <button class="btn" type="submit">Simpan ke Database</button>
+                <button class="btn secondary" type="reset">Reset</button>
+                </div>
+            </form>
+            </div>
+
+            <!-- ===== VIEW: DATABASE ===== -->
+            <div id="view-database" style="display:none">
+            <h2>Database Pendaftar <span class="badge" id="countBadge">0</span></h2>
+            <p class="muted">Data disimpan di <strong>localStorage</strong> sebagai simulasi database peramban.</p>
+            <div class="actions" style="margin-top:10px">
+                <button class="btn secondary" id="btnExport">Export JSON</button>
+                <button class="btn danger" id="btnClear">Kosongkan Database</button>
+            </div>
+            <div style="overflow:auto">
+                <table id="tableDb" aria-describedby="countBadge">
+                <thead>
+                    <tr>
+                    <th>No</th>
+                    <th>NIM</th>
+                    <th>Nama</th>
+                    <th>Jurusan</th>
+                    <th>Email</th>
+                    <th>No. WA</th>
+                    <th>Jenis Kelamin</th>
+                    <th>Alamat</th>
+                    <th>Waktu</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+                </table>
+            </div>
+            </div>
+        </section>
+        </div>
+
+        <!-- ===== FOOTER ===== -->
+        <footer class="footer">
+    <div class="ft-wrap">
+        <div class="ft-brand">
+        <strong>Sistem Registrasi Mahasiswa</strong>
+        <div class="ft-sub">Frame: Header • Nav • Sidebar • Content • Footer</div>
+        </div>
+
+        <nav class="ft-nav">
+        <a href="#" data-view="login">Login</a>
+        <a href="#" data-view="register">Registrasi</a>
+        <a href="#" data-view="database">Database</a>
+        </nav>
+
+        <div class="ft-right">
+        <div class="ft-copy">© <span id="year"></span> • Dibuat dengan HTML, CSS, JS</div>
+        <div class="ft-social">
+            <a href="#" aria-label="Email">✉️</a>
+            <a href="#" aria-label="WhatsApp">💬</a>
+            <a href="#" aria-label="Website">🌐</a>
+        </div>
+        </div>
+    </div>
+    </footer>
+
+    </div>
+
+    <script>
+        // ===== Utilities (LocalStorage DB) =====
+        const DB_KEY = 'registrations';
+        const getDb = () => JSON.parse(localStorage.getItem(DB_KEY) || '[]');
+        const setDb = (rows) => localStorage.setItem(DB_KEY, JSON.stringify(rows));
+
+        // ===== Routing (switch views) =====
+        const views = {
+        login: document.getElementById('view-login'),
+        register: document.getElementById('view-register'),
+        database: document.getElementById('view-database'),
+        };
+        const navButtons = Array.from(document.querySelectorAll('[data-view]'));
+
+        function show(view){
+        Object.values(views).forEach(v=>v.style.display='none');
+        views[view].style.display='block';
+        navButtons.forEach(b=>b.classList.toggle('active', b.dataset.view===view));
+        if(view==='database') renderTable();
+        }
+
+        navButtons.forEach(btn=>btn.addEventListener('click',()=>{
+        const view = btn.dataset.view;
+        if(view!=='login' && !state.isAuth){
+            alert('Silakan login terlebih dahulu.');
+            return;
+        }
+        show(view);
+        }));
+
+        // ===== Auth (demo) =====
+        const state = {
+        isAuth: false,
+        user: null,
+        allowUser: {username:'admin', password:'admin123'}
+        };
+
+        const elAuthName = document.getElementById('authName');
+        const elAuthDot = document.getElementById('authDot');
+        const btnLogout = document.getElementById('btnLogout');
+
+        document.getElementById('formLogin').addEventListener('submit', (e)=>{
+        e.preventDefault();
+        const fd = new FormData(e.target);
+        const username = fd.get('username').trim();
+        const password = fd.get('password').trim();
+        if(username===state.allowUser.username && password===state.allowUser.password){
+            state.isAuth = true; state.user = username;
+            elAuthName.textContent = 'Login sebagai ' + username;
+            elAuthDot.style.display='inline-block';
+            btnLogout.style.display='block';
+            show('register');
+        }else{
+            alert('Username atau password salah. Coba lagi.');
+        }
+        });
+
+        btnLogout.addEventListener('click', ()=>{
+        state.isAuth=false; state.user=null; 
+        elAuthName.textContent='Belum login'; elAuthDot.style.display='none';
+        show('login');
+        });
+
+        // ===== Register =====
+        document.getElementById('formRegister').addEventListener('submit', (e)=>{
+        e.preventDefault();
+        if(!state.isAuth){ alert('Anda belum login'); return; }
+        const fd = new FormData(e.target);
+        const row = {
+            nrp: fd.get('nrp').trim(),
+            nama: fd.get('nama').trim(),
+            jurusan: fd.get('jurusan') || '',
+            email: fd.get('email').trim(),
+            password: fd.get('passwordReg'), // disimpan hanya untuk simulasi; JANGAN lakukan ini pada produksi
+            wa: fd.get('wa').trim(),
+            jk: fd.get('jk') || '',
+            alamat: fd.get('alamat').trim(),
+            createdAt: new Date().toISOString()
+        };
+        // simple duplicate check by NIM/Email
+        const db = getDb();
+        const dupe = db.find(x=>x.nrp===row.nrp || x.email.toLowerCase()===row.email.toLowerCase());
+        if(dupe){
+            alert('NIM atau Email sudah terdaftar.');
+            return;
+        }
+        db.push(row); setDb(db);
+        alert('Data berhasil disimpan!');
+        e.target.reset();
+        show('database');
+        });
+
+        // ===== Database Table =====
+        function renderTable(){
+        const tbody = document.querySelector('#tableDb tbody');
+        tbody.innerHTML='';
+        const rows = getDb();
+        document.getElementById('countBadge').textContent = rows.length;
+        rows.forEach((r,i)=>{
+            const tr = document.createElement('tr');
+            const fmt = new Date(r.createdAt).toLocaleString();
+            tr.innerHTML = `
+            <td>${i+1}</td>
+            <td>${r.nrp}</td>
+            <td>${r.nama}</td>
+            <td>${r.jurusan}</td>
+            <td>${r.email}</td>
+            <td>${r.wa}</td>
+            <td>${r.jk}</td>
+            <td>${r.alamat}</td>
+            <td>${fmt}</td>
+            `;
+            tbody.appendChild(tr);
+        });
+        }
+
+        // Export JSON & Clear
+        document.getElementById('btnExport').addEventListener('click', ()=>{
+        const blob = new Blob([JSON.stringify(getDb(), null, 2)], {type:'application/json'});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url; a.download = 'database-registrasi.json'; a.click();
+        URL.revokeObjectURL(url);
+        });
+        document.getElementById('btnClear').addEventListener('click', ()=>{
+        if(confirm('Yakin ingin mengosongkan database?')){ setDb([]); renderTable(); }
+        });
+
+        // Misc
+        document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+    </body>
+    </html>
